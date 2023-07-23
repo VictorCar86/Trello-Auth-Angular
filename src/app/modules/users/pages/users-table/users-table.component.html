@@ -1,0 +1,50 @@
+<div class="w-full h-full p-6 grow bg-white-600">
+  <div class="container mx-auto">
+    <h1 class="mb-5 text-xl italic font-semibold text-gray-700">Users</h1>
+    <table
+      class="w-full text-sm text-center text-gray-500"
+      cdk-table
+      [dataSource]="dataSource"
+    >
+      <tr
+        cdk-header-row
+        class="text-xs text-gray-700 uppercase bg-gray-50"
+        *cdkHeaderRowDef="columns"
+      ></tr>
+      <tr
+        cdk-row
+        class="bg-white border-b"
+        [ngClass]="{ 'bg-red-200': row.price < 100 }"
+        *cdkRowDef="let row; columns: columns"
+      ></tr>
+
+      <!-- Id Column -->
+      <ng-container cdkColumnDef="id">
+        <th cdk-header-cell class="py-2" *cdkHeaderCellDef>#Id</th>
+        <td cdk-cell class="" *cdkCellDef="let row">{{ row.id }}</td>
+      </ng-container>
+
+      <!-- Avatar Column -->
+      <ng-container cdkColumnDef="avatar">
+        <th cdk-header-cell class="" *cdkHeaderCellDef>Avatar</th>
+        <td cdk-cell class="" *cdkCellDef="let row">
+          <img class="w-10 h-max my-2 mx-auto" src="/assets/svg/no-avatar.png" alt="" />
+        </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container cdkColumnDef="name">
+        <th cdk-header-cell class="" *cdkHeaderCellDef>Name</th>
+        <td cdk-cell class="" *cdkCellDef="let row">{{ row.name }}</td>
+      </ng-container>
+
+      <!-- Email Column -->
+      <ng-container cdkColumnDef="email">
+        <th cdk-header-cell class="" *cdkHeaderCellDef>Email</th>
+        <td cdk-cell class="" *cdkCellDef="let row">
+          {{ row.email }}
+        </td>
+      </ng-container>
+    </table>
+  </div>
+</div>

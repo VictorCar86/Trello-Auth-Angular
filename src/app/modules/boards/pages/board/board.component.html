@@ -1,0 +1,57 @@
+<div class="w-full h-full px-4 pb-4" [ngClass]="colors">
+    <div class="flex flex-col h-full">
+      <div>
+        <h2 class="my-4 text-xl font-bold text-white">{{ board?.title }}</h2>
+      </div>
+      <div class="flex items-start w-full h-full overflow-x-auto grow" cdkDropListGroup>
+        <div class="p-2 mr-3 bg-gray-200 rounded w-72 shrink-0" *ngFor="let list of board?.lists;let i">
+          <div class="flex justify-between py-1">
+            <h3 class="ml-2 text-sm font-bold">{{ list.title }}</h3>
+          </div>
+
+          <div class="text-sm mt-2 min-h-[2.5rem]" [id] = "list.id" cdkDropList (cdkDropListDropped)="drop($event)" [cdkDropListData]="list.cards">
+            <div
+              (click)="openDialog(card)"
+              *ngFor="let card of list?.cards"
+              cdkDrag
+              class="p-2 mt-2 bg-white border-b rounded shadow cursor-pointer border-x-gray-300 hover:bg-gray-400"
+            >
+              {{ card.title }} -- {{card.position}}
+            </div>
+          </div>
+          <div class="mt-5">
+            <div *ngIf="list.showForm">
+              <input
+                placeholder="Enter title"
+                [formControl]="inputCard"
+                type="text"
+                class="w-full bg-gray-100 border-2 border-gray-300 rounded"
+              />
+              <div class="grid grid-cols-2 gap-2 mt-2">
+                <app-btn color="primary" (click)="saveCard(list)">Add Card</app-btn>
+                <app-btn color="light" (click)="list.showForm = false">Close</app-btn>
+              </div>
+            </div>
+            <app-btn *ngIf="!list.showForm" color="light" (click)="openFormCard(list)">Add Card</app-btn>
+          </div>
+        </div>
+        <div class="shrink-0">
+          <div *ngIf="showListForm">
+            <input
+              placeholder="Enter title"
+              [formControl]="inputList"
+              type="text"
+              class="w-full bg-gray-100 border-2 border-gray-300 rounded"
+            />
+            <div class="grid grid-cols-2 gap-2 mt-2">
+              <app-btn color="primary" (click)="addList()">Add List</app-btn>
+              <app-btn color="light" (click)="showListForm = false">Close</app-btn>
+            </div>
+          </div>
+          <app-btn *ngIf="!showListForm" color="light" (click)="showListForm = !showListForm">Add another List</app-btn>
+        </div>
+      </div>
+    </div>
+  </div>
+
+

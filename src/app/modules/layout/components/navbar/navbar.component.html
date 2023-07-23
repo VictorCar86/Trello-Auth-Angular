@@ -1,0 +1,241 @@
+<ng-container *ngIf="user$ | async as user">
+  <nav class="h-11 px-6 border-gray-200 shadow-md" [ngClass]="colors">
+    <div class="flex flex-wrap items-center justify-between">
+      <button
+        class="sm:hidden"
+        type="button"
+        (click)="toggleNavbarMobile()"
+        aria-label="Toggle navbar"
+        cdkOverlayOrigin
+        #nabvarMobile="cdkOverlayOrigin"
+      >
+        <img class="invert w-7 h-min" src="https://www.svgrepo.com/show/521753/menu.svg" alt="Menu icon">
+      </button>
+      <div class="flex items-center">
+        <a class="ml-7 sm:ml-0" (click)="isOpenNavbarMobile = false" routerLink="/app">
+          <img
+            loading="lazy"
+            class="w-20"
+            src="/assets/images/logo/logo-gradient-white-trello.png"
+            alt="logo"
+          />
+        </a>
+        <div class="hidden sm:flex items-center ml-8">
+          <ul class="flex items-center space-x-2 text-sm font-medium">
+            <li>
+              <app-btn
+                [color]="bgColor"
+                (click)="isOpenOverlayBoards = !isOpenOverlayBoards"
+                cdkOverlayOrigin
+                #boardsOverlay="cdkOverlayOrigin"
+              >
+                <span class="flex space-x-2 text-left">
+                  <span>Boards</span>
+                  <fa-icon [icon]="faAngleDown"></fa-icon>
+                </span>
+              </app-btn>
+            </li>
+            <li>
+              <a routerLink="/app/users" class="block px-4 py-3 text-white"
+                >Users</a
+              >
+            </li>
+            <li>
+              <app-btn
+                typeBtn="button"
+                [color]="bgColor"
+                cdkOverlayOrigin
+                (click)="isOpenOverlayCreateBoards = !isOpenOverlayCreateBoards"
+                #createBoardOverlay="cdkOverlayOrigin"
+                >
+                <div class="flex space-x-2 text-left">
+                  <span>Create</span>
+                  <fa-icon [icon]="faAngleDown"></fa-icon>
+                </div>
+                </app-btn>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="flex items-center h-11" (click)="isOpenNavbarMobile = false">
+        <div class="flex space-x-2">
+          <button class="text-white" type="button">
+            <fa-icon [icon]="faBell"></fa-icon>
+          </button>
+          <button class="text-white" type="button">
+            <fa-icon [icon]="faInfoCircle"></fa-icon>
+          </button>
+          <button
+            type="button"
+            class="flex rounded-full"
+            aria-expanded="false"
+            type="button"
+            (click)="isOpenOverlayAvatar = !isOpenOverlayAvatar"
+            cdkOverlayOrigin
+            #menuOverlay="cdkOverlayOrigin"
+          >
+            <img
+              class="w-8 h-8 rounded-full"
+              src="{{ avatar }}"
+              alt="Avatar Image"
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+
+
+  <ng-template
+    cdkConnectedOverlay
+    [cdkConnectedOverlayOrigin]="nabvarMobile"
+    [cdkConnectedOverlayOpen]="isOpenNavbarMobile"
+    (overlayOutsideClick)="isOpenNavbarMobile = !isOpenNavbarMobile"
+  >
+    <div class="example-menu divide-y divide-gray-100 rounded shadow" cdkMenu>
+      <a class="example-menu-item" routerLink="/app" cdkMenuItem>
+        Boards
+      </a>
+      <a class="example-menu-item" routerLink="/app/users" cdkMenuItem>
+        Users
+      </a>
+      <app-btn
+        typeBtn="button"
+        [color]="bgColor"
+        cdkOverlayOrigin
+        (click)="isOpenOverlayCreateBoards = !isOpenOverlayCreateBoards; isOpenNavbarMobile = false"
+        #createBoardOverlay="cdkOverlayOrigin"
+        >
+        <div class="flex space-x-2 text-left">
+          <span>Create</span>
+          <fa-icon [icon]="faAngleDown"></fa-icon>
+        </div>
+      </app-btn>
+    </div>
+  </ng-template>
+
+  <ng-template
+    cdkConnectedOverlay
+    [cdkConnectedOverlayOrigin]="menuOverlay"
+    [cdkConnectedOverlayOpen]="isOpenOverlayAvatar"
+    (overlayOutsideClick)="isOpenOverlayAvatar = !isOpenOverlayAvatar"
+  >
+    <div
+      class="z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow w-60"
+    >
+      <div class="relative px-4 py-2 text-center">
+        <span class="block text-gray-900 text-normal">Account</span>
+        <button
+          (click)="isOpenOverlayAvatar = !isOpenOverlayAvatar"
+          class="absolute block text-sm text-gray-900 right-3 top-3"
+        >
+          <fa-icon [icon]="faClose"></fa-icon>
+        </button>
+      </div>
+      <div class="flex items-center px-4 py-3 space-x-4">
+        <img
+          class="w-10 h-10 rounded-full"
+          src="{{ avatar }}"
+          alt="Avatar Image"
+        />
+        <div class="space-y-1">
+          <div>{{ user?.name }}</div>
+          <div class="text-sm text-gray-500">{{ user?.email }}</div>
+        </div>
+      </div>
+      <ul class="py-1">
+        <li>
+          <a
+            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
+            >Profile</a
+          >
+        </li>
+        <li>
+          <a
+            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
+            >Activity</a
+          >
+        </li>
+        <li>
+          <a
+            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
+            >Cards</a
+          >
+        </li>
+        <li>
+          <a
+            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
+            >Settings</a
+          >
+        </li>
+      </ul>
+      <ul class="py-1">
+        <li>
+          <button
+            type="button"
+            class="block w-full px-4 py-2 text-sm text-gray-700 text-left hover:bg-gray-100 dark:hover:bg-gray-600"
+            (click)="logout()"
+          >
+            Log out
+          </button>
+        </li>
+      </ul>
+    </div>
+  </ng-template>
+
+  <ng-template
+    cdkConnectedOverlay
+    [cdkConnectedOverlayOrigin]="boardsOverlay"
+    [cdkConnectedOverlayOpen]="isOpenOverlayBoards"
+    (overlayOutsideClick)="isOpenOverlayBoards = !isOpenOverlayBoards"
+  >
+    <div
+      class="z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow w-60"
+    >
+      <div class="relative px-4 py-2 text-center">
+        <span class="block text-gray-900 text-normal">Boards</span>
+        <button
+          (click)="isOpenOverlayBoards = !isOpenOverlayBoards"
+          class="absolute block text-sm text-gray-900 right-3 top-3"
+        >
+          <fa-icon [icon]="faClose"></fa-icon>
+        </button>
+      </div>
+      <a
+        *ngFor="let board of boards"
+        class="flex justify-between px-4 py-3"
+        routerLink="/app/boards/{{board.id}}"
+      >
+        {{board.title}}
+      </a>
+    </div>
+  </ng-template>
+
+  <ng-template
+      cdkConnectedOverlay
+      [cdkConnectedOverlayOrigin]="createBoardOverlay"
+      [cdkConnectedOverlayOpen]="isOpenOverlayCreateBoards"
+      (overlayOutsideClick)="isOpenOverlayCreateBoards = !isOpenOverlayCreateBoards"
+  >
+    <div
+      class="z-50 justify-center my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow w-72"
+    >
+      <div class="relative px-4 py-2 text-center">
+        <span class="block text-gray-900 text-normal">Create new Boards</span>
+        <button
+          (click)="isOpenOverlayCreateBoards = !isOpenOverlayCreateBoards"
+          class="absolute block text-sm text-gray-900 right-3 top-3"
+        >
+          <fa-icon [icon]="faClose"></fa-icon>
+        </button>
+      </div>
+      <div class="flex justify-between px-4 py-3">
+        <app-board-form (showOverlay)="close($event)"></app-board-form>
+      </div>
+    </div>
+
+  </ng-template>
+
+</ng-container>
+

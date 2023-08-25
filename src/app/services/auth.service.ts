@@ -21,8 +21,8 @@ export class AuthService {
     private tokenService: TokenService
   ) { }
 
-  login(email:string, password: string) {
-    return this.http.post<ResponseLogin>(`${this.apiUrl}/auth/login`, { email, password})
+  login (email: string, password: string) {
+    return this.http.post<ResponseLogin>(`${this.apiUrl}/auth/login`, { email, password })
     // antes de enviar la respuesta del login, guardamos el token
     .pipe(
       tap(response => {
@@ -32,38 +32,37 @@ export class AuthService {
     )
   }
 
-  register(name:string, email:string, password: string) {
+  register(name: string, email: string, password: string) {
     return this.http.post(`${this.apiUrl}/auth/register`, { name, email, password})
   }
 
-  registerAndLogin(name:string, email:string, password:string) {
+  registerAndLogin (name: string, email: string, password: string) {
     return this.register(name, email, password)
-    .pipe(
-      switchMap(()=>this.login(email, password))
-    );
+      .pipe(
+        switchMap(() => this.login(email, password))
+      );
   }
 
-  isAvailable(email:string){
+  isAvailable(email: string) {
     return this.http.post<{isAvailable: boolean}>(`${this.apiUrl}/auth/is-available`, { email })
   }
 
   // Refresca el token con el refreshToken, el cual a su vez genera un nuevo access token y un refresh token
-  refreshToken(refreshToken:string){
+  refreshToken(refreshToken: string) {
     return  this.http.post<ResponseLogin>(`${this.apiUrl}/auth/refresh-token`, { refreshToken })
     .pipe(
       tap(response => {
         this.tokenService.saveToken(response.access_token);
         this.tokenService.saveRefreshToken(response.refresh_token);
       })
-    )
+    );
   }
 
-  recovery(email:string){
+  recovery(email: string) {
     return this.http.post(`${this.apiUrl}/auth/recovery`, { email })
   }
 
-  profile(){
-    const token = this.tokenService.getToken();
+  profile() {
     return this.http.get<User>(`${this.apiUrl}/auth/profile`, {
       // agregamos el contexto a la petición a fin de que el interceptor agregue el token
       context: checkToken(),
@@ -73,11 +72,11 @@ export class AuthService {
     )
   }
 
-  changePassword(token:string, newPassword:string){
-    return this.http.post(`${this.apiUrl}/auth/change-password`, { token, newPassword })
+  changePassword(token: string, newPassword: string) {
+    return this.http.post(`${this.apiUrl}/auth/change-password`, { token, newPassword });
   }
 
-  logout(){
+  logout() {
     this.tokenService.removeToken();
     this.tokenService.removeRefreshToken();
   }

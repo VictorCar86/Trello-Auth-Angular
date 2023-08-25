@@ -5,7 +5,6 @@ import { checkToken } from '@interceptors/token.interceptor';
 import { Board } from '@models/board.model';
 import { Card, CreateUpdateCardDto } from '@models/card.model';
 import { List } from '@models/list.model';
-import { User } from '@models/user.model';
 import { BoardsService } from './boards.service';
 
 @Injectable({

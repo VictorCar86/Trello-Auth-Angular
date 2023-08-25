@@ -25,15 +25,18 @@ export class TokenInterceptor implements HttpInterceptor {
     private authService: AuthService
   ) {}
 
-  /* se verifica si el contexto de la solicitud contiene una propiedad llamada CHECK_TOKEN*/
+  /* se verifica si el contexto de la solicitud contiene una propiedad llamada CHECK_TOKEN */
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    if(request.context.get(CHECK_TOKEN)){
+    if (request.context.get(CHECK_TOKEN)) {
+
       // verificamos si el access token actual es válido
       const isValidToken = this.tokenService.isValidToken();
+
       // si es valido lo agregamos a la petición, sino se va a actualizar los tokens
-      if (isValidToken){
+      if (isValidToken) {
         return this.addToken(request, next);
-      }else{
+      }
+      else {
         return this.updateAccessTokenAndRefreshToken(request, next);
       }
     }
@@ -43,9 +46,9 @@ export class TokenInterceptor implements HttpInterceptor {
   /* Intercepta la petición (request), estrae el token de la cookie y la agrega a los header de la petición */
   private addToken(request: HttpRequest<unknown>, next: HttpHandler){
     const accessToken = this.tokenService.getToken();
-    if (accessToken){
+    if (accessToken) {
       const authRequest = request.clone({
-        headers: request.headers.set('Authorization', 'Bearer ' + accessToken)
+        headers: request.headers.set('Authorization', 'Bearer ' + accessToken),
       });
       return next.handle(authRequest);
     }
@@ -54,14 +57,14 @@ export class TokenInterceptor implements HttpInterceptor {
 
   /* Actualiza los Tokens:
   - obtiene el refresh token guardado y se verifica si todavia es valido ese refresh token
-  - si es asi, se obtienen los nuevos tokens y se agregan a la petición */
+  - si es asi, se obtienen los nuevos tokens y se agregan a la petición
+  */
   private updateAccessTokenAndRefreshToken(request: HttpRequest<unknown>, next: HttpHandler){
     const refreshToken = this.tokenService.getRefreshToken();
     const isValidRefreshToken = this.tokenService.isValidRefreshToken();
 
     if (isValidRefreshToken && refreshToken){
-      return this.authService.refreshToken(refreshToken)
-      .pipe(
+      return this.authService.refreshToken(refreshToken).pipe(
         switchMap(()=> this.addToken(request,next)),
       )
     }

@@ -37,15 +37,12 @@ export class TokenService {
 
   /* Si hay un token lo decodifica y se verifica si la fecha de expiración es mayor a la fecha actual
   (estas fechas estan codificadas en segundos) */
-  isValidToken(){
-    const token = this.getToken();
-    if(!token){
-      return false;
-    }
+  private validateToken(token: string | undefined) {
+    if (!token) return false;
 
     const decodeToken = jwt_decode<JwtPayload>(token);
     // se verifica que el token tenga la fecha de expiracion
-    if(decodeToken && decodeToken?.exp){
+    if (decodeToken && decodeToken?.exp) {
       const tokenDate = new Date(0);
       tokenDate.setUTCSeconds(decodeToken.exp);
       const today = new Date();
@@ -54,21 +51,14 @@ export class TokenService {
     return false;
   }
 
+  isValidToken(){
+    const token = this.getToken();
+    return this.validateToken(token);
+  }
+
   isValidRefreshToken(){
     const refreshToken = this.getRefreshToken();
-    if(!refreshToken){
-      return false;
-    }
-
-    const decodeToken = jwt_decode<JwtPayload>(refreshToken);
-    // se verifica que el token tenga la fecha de expiracion
-    if(decodeToken && decodeToken?.exp){
-      const tokenDate = new Date(0);
-      tokenDate.setUTCSeconds(decodeToken.exp);
-      const today = new Date();
-      return tokenDate.getTime() > today.getTime();
-    }
-    return false;
+    return this.validateToken(refreshToken);
   }
 
 }

@@ -9,7 +9,7 @@
         type="email"
         class="w-full bg-gray-100 border-2 border-gray-300 rounded"
       />
-      <button type="button" class="absolute p-2 right-2" (click)="nameInput.focus()">
+      <button type="button" class="absolute top-2.5 right-2.5 px-1" (click)="nameInput.focus()">
         <fa-icon [icon]="faPen"></fa-icon>
       </button>
     </div>
@@ -36,8 +36,8 @@
         [type]="showPassword ? 'text' : 'password'"
         class="w-full bg-gray-100 border-2 border-gray-300 rounded"
       />
-      <button type="button" class="absolute p-2 right-2" (click)="showPassword = !showPassword">
-        <fa-icon [icon]="showPassword ? faEye : faEyeSlash"></fa-icon>
+      <button type="button" class="absolute top-2.5 right-2.5 px-1" (click)="showPassword = !showPassword">
+        <fa-icon class="inline-block w-5" [icon]="showPassword ? faEye : faEyeSlash"></fa-icon>
       </button>
     </div>
     <div *ngIf="form.controls.password.touched && form.controls.password.invalid">

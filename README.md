@@ -1,6 +1,17 @@
-# TrelloAuth
+# Trello Auth 📓
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli).
+Web platform for project and work management inspired by Trello that provides registration of new accounts, login and authentication for them with JWT, creation of boards and new tasks, session management within cookies.
+
+![trello_login](https://github.com/VictorCar86/Trello-Auth-Angular/assets/96636507/4b03044a-0521-4e29-be55-fcf683fb5b49)
+
+# Watch Online
+[🔗 Trello Auth](https://trello-auth.netlify.app)
+
+### Use test account
+In order to login and have access to main page, type the following dummy data in their specific fields for a standard usage:
+
+- Email: `valentina@mail.com`
+- Password: `changeme`
 
 ## Development server
 
@@ -21,9 +32,6 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 ## Running end-to-end tests
 
 Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Use test account
-In order to login and have access to main page, type into email field: `valentina@mail.com` and as password: `changeme` for a standard usage.
 
 ## Further help
 
